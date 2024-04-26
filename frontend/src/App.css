@@ -1,0 +1,43 @@
+*{
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: Verdana;
+}
+
+.home{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.header{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 5rem;
+	/* background-color: red; */
+}
+.header input{
+	margin: 2rem;
+	height: 4vh;
+	width: 20vw;
+}
+
+.buttons{
+	/* background-color: blue; */
+	margin: 1rem;
+}
+
+.buttons button{
+	height: 5vh;
+	width: 10vw;
+	margin-left: 5rem;
+	margin-right: 5rem;
+	font-size: 1.2rem;
+	font-weight: bold;
+	border-radius: 1rem;
+	border: none;
+	background-color: rgb(218, 207, 193);
+	cursor: pointer;
+}

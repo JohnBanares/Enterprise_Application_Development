@@ -1,10 +1,22 @@
+import './App.css';
 
 function App() {
-  // test
   return (
-    <div className="App">
-      <p>Hey</p>
+    <div className="home">
+
+      	<div className="header">
+       		<h1>Test the REST Microservice server implmented using Node.js</h1>
+			<input placeholder="Search"/>
+      	</div>	
+
+		<div className="buttons">
+			<button>Insert</button>
+			<button>Delete</button>
+			<button>Update</button>
+		</div>
+
     </div>
+
   );
 }
 
