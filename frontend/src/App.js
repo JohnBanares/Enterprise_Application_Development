@@ -11,20 +11,26 @@ function App() {
 	const [insertCheck, setInsertCheck] = useState('');
 	const [searchCheck, setSearchCheck] = useState('');
 	const [productList, setProductList] = useState([]);
-
 	const [searchVal, setSearchVal] = useState('');
 
-	useEffect(() => {
-		// Fetch restaurant data from MongoDB
-		axios.get(`http://localhost:3003/api/products/`)
-		.then(response => {
-			// setReviews(response.data);
-			console.log(response.data);
-		})
-		.catch(error => {
-			console.error('Error fetching reviews:', error);
-		});
-	}, []);
+	const [name, setName] = useState('');
+	const [id, setId] = useState('');
+	const [brand, setBrand] = useState('');
+	const [price, setPrice] = useState('');
+
+
+
+	// useEffect(() => {
+	// 	// Fetch restaurant data from MongoDB
+	// 	axios.get(`http://localhost:3003/api/products/`)
+	// 	.then(response => {
+	// 		// setReviews(response.data);
+	// 		console.log(response.data);
+	// 	})
+	// 	.catch(error => {
+	// 		console.error('Error fetching reviews:', error);
+	// 	});
+	// }, []);
 	
 	//when insert button is clicked show insert container 
 	// and ensure search container is gone
@@ -57,7 +63,8 @@ function App() {
 
 			axios.get(`http://localhost:3003/api/products/get-specific-products/${searchVal}`)
 			.then(response => {
-				console.log("returning search results", response.data);			
+				// console.log("returning search results", response.data);		
+				setProductList(response.data);	
 			})
 			.catch(error => {
 				console.error('Error fetching reviews:', error);
@@ -65,6 +72,28 @@ function App() {
 			  
 
 
+		}
+	}
+
+	//handle submit insert
+	const handleSubmit = async(event) => {
+		event.preventDefault();
+	
+		console.log(name, id, brand, price);
+
+		const manufacturer = brand;
+
+		try {
+			const response = await axios.post('http://localhost:3003/api/products/insert-product', {
+				name: name,
+				id: id,
+				manufacturer: manufacturer,
+				price: price
+			});
+	
+			console.log('success');
+		} catch (error) {
+			console.error('Error inserting product:', error);
 		}
 	}
 
@@ -92,14 +121,14 @@ function App() {
 		
 			{/* show insert container if insert button is clicked */}
 			{insertCheck && <div className='insertItem'>
-					<h3>Insert</h3>
-					<p>Name:<input/></p>
-					<p>Id:<input/></p>
-					<p>Brand:<input/></p>	
+					<form onSubmit={handleSubmit}>
+						<p>Name:<input value={name} onChange = {(event) => setName(event.target.value)}/></p>
+						<p>Id:<input value={id} onChange = {(event) => setId(event.target.value)}/></p>
+						<p>Brand:<input value={brand} onChange = {(event) => setBrand(event.target.value)}/></p>	
+						<p>Price:<input value={price} onChange = {(event) => setPrice(event.target.value)}/></p>	
+						<button type='submit'>Insert new product</button>
+					</form>
 
-					{/* <p>Type:<input/></p> */}
-					<p>Price:<input/></p>	
-					{/* <p>Description:<input/></p> */}
 
 					<div className='image'> 
 						<p>Image:</p>		
@@ -109,20 +138,20 @@ function App() {
 
 			</div>}
 
-			{searchCheck && <div className='insertItem'>
-					<h3>Search Results</h3>
-					<p>Name:<input readOnly='true'/></p>
-					<p>Id:<input/></p>
-					<p>Brand:<input/></p>	
-
-					{/* <p>Type:<input/></p> */}
-					<p>Price:<input/></p>	
-					{/* <p>Description:<input/></p> */}
-
-					<div className='image'> 
-						<p>Image:</p>		
-						<img src={shoe}/>	
-					</div>
+			{searchCheck && <div>
+					{productList.map(product => (
+						<div className='searchItem'key={product.id}>
+							<h3>search results</h3>
+							<p>Name: <input value={product.name} readOnly={true} /></p>
+							<p>Id: <input value={product.id} readOnly={true} /></p>
+							<p>Brand: <input value={product.manufacturer} readOnly={true} /></p>
+							<p>Price: <input value={product.price} readOnly={true} /></p>
+							<div className='searchImage'>
+								<p>Image:</p>
+								<img src={shoe} alt={product.name} />
+							</div>
+						</div>
+					))}
 					<IoIosClose className='close'onClick={()=>handleSearchCheck(false)}/>
 			</div>}
 		
