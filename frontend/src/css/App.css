@@ -140,3 +140,15 @@ input:focus{
 	position: absolute;
 	left: 50%;
 }
+
+.deleteButton{
+	width: 1.5vw;
+	height: 3vh;
+	margin-left: 1rem;
+	border-radius: 20px;
+	cursor: pointer;
+}
+
+.deleteButton.clicked{
+	background-color: red;
+}
