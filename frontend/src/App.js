@@ -21,6 +21,8 @@ function App() {
 	const [price, setPrice] = useState('');
 
 	const [deleteState, setDeleteState] = useState([]);
+	const [deleteList, setDeleteList] = useState([]);
+
 
 	useEffect(() =>{
 		setDeleteState(Array(productList.length).fill(false));
@@ -28,26 +30,56 @@ function App() {
 
 // -------------------------------------- delete -------------------------------------------------------------
 	//keep state of each container being deleted
-	const handleDelete = (index) => {
+	const handleDelete = (index, id) => {
         const newClickedState = [...deleteState];
 
-		// toggle state of button
+		// set button to true
 		if(newClickedState[index] === false){
 			newClickedState[index] = true;
 			setDeleteState(newClickedState);
-			console.log(newClickedState);
+			// console.log(newClickedState);
+
+			//add id to a list to delete
+			setDeleteList([...deleteList, id]);
+
 			return;
 		}
+		//set button back to false
 		if(newClickedState[index] === true){
 			newClickedState[index] = false;
 			setDeleteState(newClickedState);
-			console.log(newClickedState);
+			// console.log(newClickedState);
+
+			//remove id from the list
+			setDeleteList(deleteList.filter(itemId => itemId !== id));
+
 			return;
 		}
     };
 
+	//handle to delete list of ids
+	const handleDeleteSubmit = async() =>{
+		console.log("deleting the list of id", deleteList);
+
+		try {
+			const response = await axios.delete('http://localhost:3003/api/products/delete-products', {data: {deleteList}});
+			setDeleteList([]);
+			window.location.reload();
+			console.log('success');
+			
+
+		} catch (error) {
+			console.error('Error inserting product:', error);
+			setDeleteList([]);
+
+		}
+
+	}
+
+	//show delete circles and confirm delete button
 	const handleDeleteCheck = (condtion) => {
-		setDeleteCheck(condtion);
+		setDeleteCheck(!condtion);
+		setDeleteList([]);
 	}
 
 
@@ -103,6 +135,7 @@ function App() {
 // -------------------------------------- Search -------------------------------------------------------------	
 	const handleSearchCheck = (condtion)=>{
 		setSearchCheck(condtion);
+		setDeleteCheck(false);
 
 	} 
 	
@@ -122,7 +155,7 @@ function App() {
 
 			axios.get(`http://localhost:3003/api/products/get-specific-products/${searchVal}`)
 			.then(response => {
-				console.log("returning search results", response.data);		
+				// console.log("returning search results", response.data);		
 				setProductList(response.data);	
 			})
 			.catch(error => {
@@ -151,8 +184,15 @@ function App() {
 			{/* CRUD opetations */}
 			<div className="buttons">
 				<button onClick={()=> handleInsertCheck(true)}>Insert</button>
-				<button onClick={()=> handleDeleteCheck(true)}>Delete</button>
+				<button onClick={()=> handleDeleteCheck(deleteCheck)}>
+					{deleteCheck ? 'Cancel': 'Delete'}
+				</button>
 				<button>Update</button>
+			</div>
+
+			{/* display delete confirm button and keep count */}
+			<div> 
+				{deleteCheck &&<button className='selectDelete' onClick={() => handleDeleteSubmit()}>Delete Selected products ({deleteList.length})</button>}
 			</div>
 		
 			{/* show insert container if insert button is clicked */}
@@ -183,7 +223,7 @@ function App() {
 						{/* show ability to delete item from list when delete button is clicked */}
 						{deleteCheck &&<button 
 							className={`deleteButton ${deleteState[index] ? 'clicked' : ''}`}	
-							onClick={() => handleDelete(index)}>
+							onClick={() => handleDelete(index, product.id)}>
 						</button>}
 
 						<h2 style={{padding: "1rem"}}>search results</h2>

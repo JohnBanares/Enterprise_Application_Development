@@ -104,7 +104,7 @@ input:focus{
 .close{
 	position: absolute;
 	left: 79%;
-	top: 47%;
+	top: 51%;
 	font-size: 4rem;
 	cursor: pointer;
 }
@@ -151,4 +151,16 @@ input:focus{
 
 .deleteButton.clicked{
 	background-color: red;
+}
+
+.selectDelete{
+	height: 5vh;
+	width: 12vw;
+	padding: .3rem;
+	font-size: 1.2rem;
+	font-weight: bold;
+	border-radius: 1rem;
+	border: none;
+	background-color: rgb(215, 104, 84);
+	cursor: pointer;
 }

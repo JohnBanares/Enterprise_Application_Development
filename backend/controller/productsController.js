@@ -16,7 +16,7 @@ const getSpecificProducts = async (req, res) => {
       	}
     	res.status(200).json(products);
     } catch (error) {
-    	console.error('Error fetching user:', error);
+    	console.error('Error fetching products:', error);
     	res.status(500).json({ error: 'Internal Server Error' });
 	}	
 }
@@ -33,8 +33,23 @@ const insertProduct = async (req, res) => {
     }
 }
 
+const deleteProducts = async (req, res) => {
+	const { deleteList } = req.body;
+	
+	try {
+    	const products = await Products.deleteMany({ id: { $in: deleteList} });
+  
+    	res.status(200).json(products);
+    } catch (error) {
+    	console.error('Error deleting many:', error);
+    	res.status(500).json({ error: 'Internal Server Error' });
+	}	
+
+}
+
 module.exports = {
     getProduct,
     getSpecificProducts,
 	insertProduct,
+	deleteProducts,
 };
