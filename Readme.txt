@@ -4,7 +4,7 @@ To run the frontend
 2. Type into console "cd frontend"  
     ensuring that you are in the root of the project
     e.g
-    \Enterprise_App_CA\frontend (make sure this is the directory you are in)
+    \Enterprise_Application_Development-main\frontend (make sure this is the directory you are in)
 
 3. And start the frontend using "npm start"
 
@@ -14,6 +14,6 @@ To run the backend
 2. Type into console "cd backend" ensuring 
     that you are at the root of the project 
     e.g
-    \Enterprise_App_CA\backend (make sure this is the directory you are in)
+    \Enterprise_Application_Development-main\backend (make sure this is the directory you are in)
 
 3. And start the backend using "npm run dev"
