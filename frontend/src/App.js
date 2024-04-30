@@ -227,13 +227,42 @@ function App() {
 	const handleEdit = (index) =>{
 		const newEditState = [...editState];
 
-		// if(currentlyEditing) return;
 
+		//when user clicks cancel edit
 		if(newEditState[index] === true){
 			newEditState[index] = false;
 			setEditState(newEditState);
+
+			//set name back to readonly
+			const newEditStates = [...readOnlyStateName];
+			newEditStates[index] = true;
+			setReadOnlyStateName(newEditStates);
+
+			//set id back to readonly
+			const newEditStates2 = [...readOnlyStateId];
+			newEditStates2[index] = true;
+			setReadOnlyStateId(newEditStates);
+
+			//set manufact back to readonly
+			const newEditStates3 = [...readOnlyStateManu];
+			newEditStates[index] = true;
+			setReadOnlyStateManu(newEditStates);
+
+			//set id back to readonly
+			const newEditStates4 = [...readOnlyStatePrice];
+			newEditStates2[index] = true;
+			setReadOnlyStatePrice(newEditStates);
+
+
+			console.log("saving changes to database");
+			console.log(inputNameValues[index]);
+			console.log(inputIdValues[index]);
+			console.log(inputManufaValues[index]);
+			console.log(inputPriceValues[index]);
+
 			return;
 		}
+		//when user clicks edit
 		if(newEditState[index] === false){
 			setcurrentlyEditing(true);
 			newEditState[index] = true;
@@ -243,17 +272,79 @@ function App() {
 
 	}
 
+	//focus typing in name input
 	const handleEditName = (index) => {
-
         //allow user input
         const newEditStates = [...readOnlyStateName];
         newEditStates[index] = false;
         setReadOnlyStateName(newEditStates);
 
-
         if (!newEditStates[index]) {
             inputRefsName.current[index].focus();
         }
+    };
+
+	//focus typing in id input
+	const handleEditId = (index) => {
+        //allow user input
+        const newEditStates = [...readOnlyStateId];
+        newEditStates[index] = false;
+        setReadOnlyStateId(newEditStates);
+
+        if (!newEditStates[index]) {
+            inputRefsId.current[index].focus();
+        }
+    };
+
+	//focus typing in brand input
+	const handleEditManufa = (index) => {
+        //allow user input
+        const newEditStates = [...readOnlyStateManu];
+        newEditStates[index] = false;
+        setReadOnlyStateManu(newEditStates);
+
+        if (!newEditStates[index]) {
+            inputRefsManufact.current[index].focus();
+        }
+    };
+
+	//focus typing in price input
+	const handleEditPrice = (index) => {
+        //allow user input
+        const newEditStates = [...readOnlyStatePrice];
+        newEditStates[index] = false;
+        setReadOnlyStatePrice(newEditStates);
+
+        if (!newEditStates[index]) {
+            inputRefsPrice.current[index].focus();
+        }
+    };
+
+	 // keep tracking of input field rating
+	 const handleChangeName = (index, value) => {
+        const newInputValues = [...inputNameValues];
+        newInputValues[index] = value;
+        setInputNameValues(newInputValues);
+    };
+
+    // keep tracking of input field desc
+    const handleChangeId = (index, value) => {
+        const newInputDescValues = [...inputIdValues];
+        newInputDescValues[index] = value;
+        setInputIdValues(newInputDescValues);
+    };
+	 // keep tracking of input field rating
+	 const handleChangeManufa = (index, value) => {
+        const newInputValues = [...inputManufaValues];
+        newInputValues[index] = value;
+        setInputManufaValues(newInputValues);
+    };
+
+    // keep tracking of input field desc
+    const handleChangePrice = (index, value) => {
+        const newInputDescValues = [...inputPriceValues];
+        newInputDescValues[index] = value;
+        setInputManufaValues(newInputDescValues);
     };
 
 
@@ -347,10 +438,13 @@ function App() {
 						<p>
 							Name:
 							<input 
+								type='text'
 								value={inputNameValues[index]} 
 								readOnly={readOnlyStateName[index]} 
 								ref={(inputElement) => (inputRefsName.current[index] = inputElement)} 
+								onChange={(event) => handleChangeName(index, event.target.value)}					
 							/> 
+
 							{editState[index] &&
 								<CiEdit 
 								className='edit-icon'
@@ -360,29 +454,47 @@ function App() {
 						<p>
 							Id: 
 							<input 
+								type='text'
 								value={inputIdValues[index]} 
 								readOnly={readOnlyStateId[index]} 
 								ref={(inputElement) => (inputRefsId.current[index] = inputElement)} 
+								onChange={(event) => handleChangeId(index, event.target.value)}						
 							/>
-							{editState[index] &&<CiEdit className='edit-icon'/>}
+							{editState[index] &&
+								<CiEdit 
+								className='edit-icon'
+								onClick={() => handleEditId(index)}
+								/>}
 						</p>
 						<p>
 							Brand:
 							<input 
+								type='text'
 								value={inputManufaValues[index]} 
 								readOnly={readOnlyStateManu[index]}
 								ref={(inputElement) => (inputRefsManufact.current[index] = inputElement)} 
+								onChange={(event) => handleChangeManufa(index, event.target.value)}						
 							/>
-							{editState[index] &&<CiEdit className='edit-icon'/>}
+							{editState[index] &&
+								<CiEdit 
+								className='edit-icon'
+								onClick={() => handleEditManufa(index)}
+								/>}
 						</p>
 						<p>
 							Price: 
 							<input 
+								type='text'
 								value={inputPriceValues[index]} 
 								readOnly={readOnlyStatePrice[index]}
-								ref={(inputElement) => (inputRefsPrice.current[index] = inputElement)} 
+								ref={(inputElement) => (inputRefsPrice.current[index] = inputElement)}
+								onChange={(event) => handleChangePrice(index, event.target.value)}					
 							/>
-							{editState[index] &&<CiEdit className='edit-icon'/>}
+							{editState[index] &&
+								<CiEdit 
+								className='edit-icon'
+								onClick={() => handleEditPrice(index)}
+								/>}
 						</p>
 
 						<div className='searchImage'>
