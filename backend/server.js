@@ -9,7 +9,7 @@ const app = express()
 
 
 app.use(express.json())
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'about')));
 
 app.use(cors());
 
@@ -18,6 +18,10 @@ app.use((req, res, next) => {
     console.log(req.path, req.method)
     next()
 })
+
+app.get('/about', (req, res) => {
+    res.sendFile(path.join(__dirname, 'about', 'about.html'));
+  });
 
 app.use('/api/products', productsRoutes)
 
