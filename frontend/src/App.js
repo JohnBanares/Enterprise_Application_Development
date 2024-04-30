@@ -1,9 +1,11 @@
 import './css/App.css';
 import shoe from './image/shoe.png';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { CiSearch } from "react-icons/ci";
 import { IoIosClose } from "react-icons/io";
+import { CiEdit } from "react-icons/ci";
+
 
 
 function App() {
@@ -11,6 +13,8 @@ function App() {
 	const [insertCheck, setInsertCheck] = useState('');
 	const [searchCheck, setSearchCheck] = useState('');
 	const [deleteCheck, setDeleteCheck] = useState('');
+	const [updateCheck, setUpdateCheck] = useState('');
+
 
 	const [productList, setProductList] = useState([]);
 	const [searchVal, setSearchVal] = useState('');
@@ -23,9 +27,56 @@ function App() {
 	const [deleteState, setDeleteState] = useState([]);
 	const [deleteList, setDeleteList] = useState([]);
 
+	const [editState, setEditState] = useState([]);
+	const [currentlyEditing, setcurrentlyEditing] = useState(false);
+
+	const inputRefsName = useRef([]);
+	const inputRefsId = useRef([]);
+	const inputRefsManufact = useRef([]);
+	const inputRefsPrice = useRef([]);
+
+	//store copy of values
+	const [inputNameValues, setInputNameValues] = useState([]);
+    const [inputIdValues, setInputIdValues] = useState([]);
+    const [inputManufaValues, setInputManufaValues] = useState([]);
+    const [inputPriceValues, setInputPriceValues] = useState([]);
+
+	//readonly states
+	const [readOnlyStateName, setReadOnlyStateName] = useState([]);
+    const [readOnlyStateId, setReadOnlyStateId] = useState([]);
+    const [readOnlyStateManu, setReadOnlyStateManu] = useState([]);
+    const [readOnlyStatePrice, setReadOnlyStatePrice] = useState([]);
+
+
+
+
+
 
 	useEffect(() =>{
 		setDeleteState(Array(productList.length).fill(false));
+		setEditState(Array(productList.length).fill(false));
+
+		inputRefsName.current = Array(productList.length).fill(null);
+        inputRefsId.current = Array(productList.length).fill(null);
+        inputRefsManufact.current = Array(productList.length).fill(null);
+		inputRefsPrice.current = Array(productList.length).fill(null);
+
+
+		//used for editing store a copy of the value for each field in the input box
+		setInputNameValues(productList.map(product => product.name));
+        setInputIdValues(productList.map(product => product.id));
+        setInputManufaValues(productList.map(product => product.manufacturer));
+        setInputPriceValues(productList.map(product => product.price));
+
+		//set readonly to true
+		setReadOnlyStateName(Array(productList.length).fill(true));
+        setReadOnlyStateId(Array(productList.length).fill(true));
+        setReadOnlyStateManu(Array(productList.length).fill(true));
+        setReadOnlyStatePrice(Array(productList.length).fill(true));
+
+
+
+
 	}, [productList]);
 
 // -------------------------------------- delete -------------------------------------------------------------
@@ -136,6 +187,7 @@ function App() {
 	const handleSearchCheck = (condtion)=>{
 		setSearchCheck(condtion);
 		setDeleteCheck(false);
+		setUpdateCheck(false);
 
 	} 
 	
@@ -166,6 +218,44 @@ function App() {
 
 		}
 	}
+// -------------------------------------- update -------------------------------------------------------------	
+	const handleUpdateCheck = (condtion)=>{
+		setUpdateCheck(condtion);
+		setSearchCheck(false);
+	} 
+
+	const handleEdit = (index) =>{
+		const newEditState = [...editState];
+
+		// if(currentlyEditing) return;
+
+		if(newEditState[index] === true){
+			newEditState[index] = false;
+			setEditState(newEditState);
+			return;
+		}
+		if(newEditState[index] === false){
+			setcurrentlyEditing(true);
+			newEditState[index] = true;
+			setEditState(newEditState);
+			return;
+		}
+
+	}
+
+	const handleEditName = (index) => {
+
+        //allow user input
+        const newEditStates = [...readOnlyStateName];
+        newEditStates[index] = false;
+        setReadOnlyStateName(newEditStates);
+
+
+        if (!newEditStates[index]) {
+            inputRefsName.current[index].focus();
+        }
+    };
+
 
 	return (
 		<div className="home">
@@ -187,7 +277,7 @@ function App() {
 				<button onClick={()=> handleDeleteCheck(deleteCheck)}>
 					{deleteCheck ? 'Cancel': 'Delete'}
 				</button>
-				<button>Update</button>
+				<button  onClick={()=> handleUpdateCheck(true)}>Update</button>
 			</div>
 
 			{/* display delete confirm button and keep count */}
@@ -195,7 +285,7 @@ function App() {
 				{deleteCheck &&<button className='selectDelete' onClick={() => handleDeleteSubmit()}>Delete Selected products ({deleteList.length})</button>}
 			</div>
 		
-			{/* show insert container if insert button is clicked */}
+			{/* ---------------------------------------------show insert container if insert button is clicked ---------------------------------------------*/}
 			{insertCheck && <div className='insertItem'>
 					<form onSubmit={handleSubmit}>
 						<p>Name:<input value={name} onChange = {(event) => setName(event.target.value)}/></p>
@@ -214,7 +304,7 @@ function App() {
 
 			</div>}
 
-			{/* list for search results */}
+			{/* ---------------------------------------------list for search results ---------------------------------------------*/}
 			{searchCheck && <div className='search-container'>
 
 				{productList.map((product,index) => (
@@ -239,6 +329,79 @@ function App() {
 					</div>
 				))}
 				<IoIosClose className='close'onClick={()=>handleSearchCheck(false)}/>
+			</div>}
+
+			{/* --------------------------------------------- update --------------------------------------------- */}
+			{updateCheck && <div className='search-container'>
+
+				{productList.map((product,index) => (
+					<div className='searchItem'key={index}>
+						<h2 style={{padding: "1rem"}}>Update</h2>
+
+						{/* toggle edit button to cancel or edit */}
+						<button className={`editButton ${editState[index] ? 'clicked' : ''}`} onClick={()=>handleEdit(index)}> 
+							{editState[index] ? 'Cancel': 'Edit'}
+						</button>
+
+						{/* only show edit icone when edit button is pressed */}
+						<p>
+							Name:
+							<input 
+								value={inputNameValues[index]} 
+								readOnly={readOnlyStateName[index]} 
+								ref={(inputElement) => (inputRefsName.current[index] = inputElement)} 
+							/> 
+							{editState[index] &&
+								<CiEdit 
+								className='edit-icon'
+								onClick={() => handleEditName(index)}
+							/>}
+						</p>
+						<p>
+							Id: 
+							<input 
+								value={inputIdValues[index]} 
+								readOnly={readOnlyStateId[index]} 
+								ref={(inputElement) => (inputRefsId.current[index] = inputElement)} 
+							/>
+							{editState[index] &&<CiEdit className='edit-icon'/>}
+						</p>
+						<p>
+							Brand:
+							<input 
+								value={inputManufaValues[index]} 
+								readOnly={readOnlyStateManu[index]}
+								ref={(inputElement) => (inputRefsManufact.current[index] = inputElement)} 
+							/>
+							{editState[index] &&<CiEdit className='edit-icon'/>}
+						</p>
+						<p>
+							Price: 
+							<input 
+								value={inputPriceValues[index]} 
+								readOnly={readOnlyStatePrice[index]}
+								ref={(inputElement) => (inputRefsPrice.current[index] = inputElement)} 
+							/>
+							{editState[index] &&<CiEdit className='edit-icon'/>}
+						</p>
+
+						<div className='searchImage'>
+							<p>Image:</p>
+							<img src={shoe} alt={product.name} />
+						</div>
+
+						{/* show save button when editiing */}
+						{editState[index] &&
+							<button 
+								className="editButton" 
+								onClick={()=>handleEdit(index)}
+							> 
+							Save
+							</button>
+						}
+					</div>
+				))}
+				<IoIosClose className='close'onClick={()=>handleUpdateCheck(false)}/>
 			</div>}
 
 		</div>
