@@ -1,16 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <style>
+
+        li, p{
+            font-size: 1.2rem;
+        }
+        .functions h3{
+            margin: 0rem;
+        }
+        .functions h4{
+            margin-left: 2rem;
+            color: rgb(184, 150, 109);
+        }
+      
+        .desc {
+            margin: 10px;
+            border: 4px solid black;
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            font-size: 1rem;
+        }
+        .desc p{
+            font-size: 1rem;
+            font-weight: bold;
+            max-width: 35vw;
+            margin: 0.45rem;
+        }
+    </style>
+
 </head>
 <body>
     <p>This page provides information about the application and its features.</p>
     <p>It includes explanations on various aspects of the application, such as:</p>
     <ul>
         <li>General description of how the application works</li>
+        <div class="desc">
+            <p>This application follows the MERN stack so the this project is 
+                all done in one language JavaScript and the technologies
+                consist of MongoDB, Express, Node and React. And follows a 3 tier
+                architectre system. 
+            </p>
+            <p>Presentation Tier: React handles the UI and updates according to user inputs.</p>
+            <p>Application Tier: Express and Node handle the communication and acts as a bridge
+                to handle user request and server responses.
+            </p>
+            <p>Data Tier: Mongodb handles the storage of data in this case products</p>
+
+            <div class="functions">
+                <h2>
+                    Here are the features of this application:
+                </h3>
+                <h3>
+                    Here are the features of this application:
+                </h3>
+
+                <h4>
+                    Home Page:
+                </h4>
+                <p>- Search database by brand name</p>
+                <p>- Insert a new product, by creating a name, id, brand and price</p>
+                <p>- To delete must first use the search box to find a brand. 
+                    Then click the delete button to display delete icons,
+                    and choose multiple product or product to delete.
+                    It also shows how many products are selected to delete.
+                </p>
+
+                <p>
+                    - To update a product its acts the same way,
+                    you must first search a product the click the update button. 
+                    This will reveal the edit button on each product container,
+                    in which you can edit and save all changes to each field.
+                </p>
+                <h4>
+                    About Page:
+                </h4>
+
+                <p>
+                    - This page fetches html data from about.html stored on the backend folder
+                    using axios and inserts this data in an empty div in the about component
+                </p>
+            </div>
+           
+        </div>
+
         <li>Description of the technologies involved</li>
+        <div class="desc">
+            <h2>The technologies used:</h2>
+            <p>Mongodb atlas: A cloud database serive that allows for the development of custom models and provides scalability security and monitoring.</p>
+            <p>React: A JavaScript library used for building UI with reusable commponents, allowing for interactivity and seamless user experience</p>
+            <p>Node javascript runtime enviroment that allows for the development of web applications and handles the development of backend APIs </p>
+            <p>Express: A node web application framework that allows to structure api end points in the backend folder. Simplifies the development of APIs, handling request and responses on the server-side. </p>
+            <p>Axios: Used to make creating AJAX requests easier</p>
+            <p>React router dom: handles the rendering of components and routes for web navigation</p>
+        </div>
         <li>Description of some weaknesses of the application</li>
+        <div class="desc">
+            <h2>Some weaknesses:</h2>
+            <p>- Being able to edit multiple containers</p>
+            <p>- No dataset</p>
+            <p>- No image upload</p>
+            <p>- Lack of pagination</p>   
+            <p>- Lack of input insert validation</p>
+            <p>- Unsure if database can be accessed outside my home enviroment</p>
+        </div>
+
         <li>Description of some alternatives that could be used</li>
+        <div class="desc">
+            <p>
+                Mongodb-memory-server is a lightweight and in-memory MongoDB server used
+                for development and testing environments. 
+                This would be more apporopriate as this project is not a production build project.
+                However in the future this project is setup for scalability and real world deployment
+            </p>
+        </div>
+
     </ul>
-    <p>Feel free to explore and learn more!</p>
 </body>
 </html>

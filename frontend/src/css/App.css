@@ -184,3 +184,16 @@ input:focus{
 .editButton.clicked{
 	background-color: rgb(212, 82, 82);
 }
+
+.aboutPage{
+	position: absolute;
+	left: 85%;
+	/* height: 2vh; */
+	border: 3px solid black;
+	padding: 2rem;
+	text-decoration: none;
+	color: black;
+	font-weight: bold;
+	background-color: rgb(170, 182, 222);
+
+}

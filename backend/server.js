@@ -19,6 +19,7 @@ app.use((req, res, next) => {
     next()
 })
 
+// send over about.hrml content, this is fetched from the about folder stored in this folder
 app.get('/about', (req, res) => {
     res.sendFile(path.join(__dirname, 'about', 'about.html'));
   });

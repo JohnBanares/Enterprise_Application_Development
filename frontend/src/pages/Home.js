@@ -206,6 +206,7 @@ function Home() {
 		if (event.key === 'Enter') {
 			handleSearch();
 			setInsertCheck(false);
+            setUpdateCheck(false);
 
 			axios.get(`http://localhost:3003/api/products/get-specific-products/${searchVal}`)
 			.then(response => {
@@ -266,13 +267,13 @@ function Home() {
 
 			//set manufact back to readonly
 			const newEditStates3 = [...readOnlyStateManu];
-			newEditStates[index] = true;
-			setReadOnlyStateManu(newEditStates);
+			newEditStates3[index] = true;
+			setReadOnlyStateManu(newEditStates3);
 
 			//set id back to readonly
 			const newEditStates4 = [...readOnlyStatePrice];
-			newEditStates2[index] = true;
-			setReadOnlyStatePrice(newEditStates);
+			newEditStates4[index] = true;
+			setReadOnlyStatePrice(newEditStates4);
 
 
 			// console.log("saving changes to database");
@@ -352,22 +353,22 @@ function Home() {
 
     // keep tracking of input field desc
     const handleChangeId = (index, value) => {
-        const newInputDescValues = [...inputIdValues];
-        newInputDescValues[index] = value;
-        setInputIdValues(newInputDescValues);
+        const newInputDIdValues = [...inputIdValues];
+        newInputDIdValues[index] = value;
+        setInputIdValues(newInputDIdValues);
     };
 	 // keep tracking of input field rating
 	 const handleChangeManufa = (index, value) => {
-        const newInputValues = [...inputManufaValues];
-        newInputValues[index] = value;
-        setInputManufaValues(newInputValues);
+        const newInputManufaValues = [...inputManufaValues];
+        newInputManufaValues[index] = value;
+        setInputManufaValues(newInputManufaValues);
     };
 
     // keep tracking of input field desc
     const handleChangePrice = (index, value) => {
-        const newInputDescValues = [...inputPriceValues];
-        newInputDescValues[index] = value;
-        setInputManufaValues(newInputDescValues);
+        const newInputPriceValues = [...inputPriceValues];
+        newInputPriceValues[index] = value;
+        setInputPriceValues(newInputPriceValues);
     };
 
 
@@ -381,7 +382,7 @@ function Home() {
 				<div className='search'>
 					<input placeholder="Search" onChange={handleValChange} onKeyDown={handleKeyPress}/>
 					<CiSearch className='icon-search'/>
-
+                    <Link className='aboutPage' to="/about">About this page</Link>
 				</div>
 
 			</div>	
