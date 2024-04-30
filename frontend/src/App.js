@@ -207,7 +207,7 @@ function App() {
 
 			axios.get(`http://localhost:3003/api/products/get-specific-products/${searchVal}`)
 			.then(response => {
-				// console.log("returning search results", response.data);		
+				console.log("returning search results", response.data);		
 				setProductList(response.data);	
 			})
 			.catch(error => {
@@ -224,7 +224,7 @@ function App() {
 		setSearchCheck(false);
 	} 
 
-	const handleEdit = (index) =>{
+	const handleEdit = async(index, id) =>{
 		const newEditState = [...editState];
 
 
@@ -232,6 +232,24 @@ function App() {
 		if(newEditState[index] === true){
 			newEditState[index] = false;
 			setEditState(newEditState);
+
+			const copy1 = inputNameValues[index];
+			const copy2 =inputIdValues[index];
+			const copy3 = inputManufaValues[index];
+			const copy4 = inputPriceValues[index];
+			try {
+				const response = await axios.put('http://localhost:3003/api/products/update-products', {
+					_id: id,
+					name: copy1,
+					id: copy2,
+					manufacturer: copy3,
+					price: copy4
+				});
+		
+				console.log('success');
+			} catch (error) {
+				console.error('Error inserting product:', error);
+			}
 
 			//set name back to readonly
 			const newEditStates = [...readOnlyStateName];
@@ -254,11 +272,13 @@ function App() {
 			setReadOnlyStatePrice(newEditStates);
 
 
-			console.log("saving changes to database");
-			console.log(inputNameValues[index]);
-			console.log(inputIdValues[index]);
-			console.log(inputManufaValues[index]);
-			console.log(inputPriceValues[index]);
+			// console.log("saving changes to database");
+			// console.log(inputNameValues[index]);
+			// console.log(inputIdValues[index]);
+			// console.log(inputManufaValues[index]);
+			// console.log(inputPriceValues[index]);
+			// console.log(id);
+
 
 			return;
 		}
@@ -506,7 +526,7 @@ function App() {
 						{editState[index] &&
 							<button 
 								className="editButton" 
-								onClick={()=>handleEdit(index)}
+								onClick={()=>handleEdit(index, product._id)}
 							> 
 							Save
 							</button>

@@ -47,9 +47,26 @@ const deleteProducts = async (req, res) => {
 
 }
 
+const updateProducts = async (req, res) => {
+	const { _id, name, id, manufacturer, price } = req.body;
+	
+	Products.findOneAndUpdate({ _id }, { name, id, manufacturer, price })
+    .then(result => {
+      console.log(result);
+      res.status(200).json({ message: "Product updated successfully" });
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+    })
+	
+}
+
+
 module.exports = {
     getProduct,
     getSpecificProducts,
 	insertProduct,
 	deleteProducts,
+	updateProducts,
 };
