@@ -48,7 +48,11 @@
             <p>Application Tier: Express and Node handle the communication and acts as a bridge
                 to handle user request and server responses.
             </p>
-            <p>Data Tier: Mongodb handles the storage of data in this case products</p>
+            <p>Data Tier: Mongodb handles the storage of data in this case products.
+                Server.js file in the backend folder loads the products.json into mongo db atlas into a collection called products2.
+                As the sever starts and a connection is made, it checks to see if there are already data inside this collection, this makes it so that the products inside
+                the .json aren't loaded into the collection again preventing duplicates.
+            </p>
 
             <div class="functions">
                 <h2>
