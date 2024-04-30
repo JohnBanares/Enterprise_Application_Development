@@ -113,7 +113,7 @@ function Home() {
 		console.log("deleting the list of id", deleteList);
 
 		try {
-			const response = await axios.delete('http://localhost:3003/api/products/delete-products', {data: {deleteList}});
+			const response = await axios.delete('http://localhost:3003/api/products2/delete-products2', {data: {deleteList}});
 			setDeleteList([]);
 			window.location.reload();
 			console.log('success');
@@ -167,7 +167,7 @@ function Home() {
 		const manufacturer = brand;
 
 		try {
-			const response = await axios.post('http://localhost:3003/api/products/insert-product', {
+			const response = await axios.post('http://localhost:3003/api/products2/insert-product2', {
 				name: name,
 				id: id,
 				manufacturer: manufacturer,
@@ -208,7 +208,7 @@ function Home() {
 			setInsertCheck(false);
             setUpdateCheck(false);
 
-			axios.get(`http://localhost:3003/api/products/get-specific-products/${searchVal}`)
+			axios.get(`http://localhost:3003/api/products2/get-specific-products2/${searchVal}`)
 			.then(response => {
 				console.log("returning search results", response.data);		
 				setProductList(response.data);	
@@ -242,7 +242,7 @@ function Home() {
 			const copy3 = inputManufaValues[index];
 			const copy4 = inputPriceValues[index];
 			try {
-				const response = await axios.put('http://localhost:3003/api/products/update-products', {
+				const response = await axios.put('http://localhost:3003/api/products2/update-products2', {
 					_id: id,
 					name: copy1,
 					id: copy2,
